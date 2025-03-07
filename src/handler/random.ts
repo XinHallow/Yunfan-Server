@@ -4,7 +4,7 @@ const pattern = new URLPattern({ pathname: "/api/v1/random" });
 
 export default async (request: Request): Promise<Response> => {
   // 检查请求
-  if (request.method !== "GET") {
+  if (request.method !== "POST") {
     throw new Error("不允许的请求方法");
   }
   if (!request.body) {
