@@ -6,12 +6,12 @@ import handlers from "./handler/mod.ts";
  * @returns 响应体
  */
 const main = async (request: Request): Promise<Response> => {
-  for (const handler in handlers) {
+  for (const handlerKey in handlers) {
     try {
-      const handlerFunc = handlers[handler];
-      const response: Response = await handlerFunc(request);
-      if (response) {
-        return response;
+      const handlerFunction = handlers[handlerKey];
+      const handlerResponse: Response = await handlerFunction(request);
+      if (handlerResponse) {
+        return handlerResponse;
       }
     } catch (_) {
       continue;
