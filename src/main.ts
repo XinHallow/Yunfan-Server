@@ -24,6 +24,9 @@ const main = async (request: Request): Promise<Response> => {
       message: "No APIs or pages are available at this time.",
     }),
     {
+      headers: {
+        "Content-Type": "application/json",
+      },
       status: 400,
       statusText: "Bad Request",
     }
