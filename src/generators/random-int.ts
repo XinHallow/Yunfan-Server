@@ -16,26 +16,20 @@ export default (
   if (min > max) {
     throw new Error("最小值必须大于最大值");
   }
-  if (isNaN(min) || isNaN(max) || isNaN(count)) {
-    throw new Error("参数必须是数字");
-  }
   if (count <= 0) {
     throw new Error("生成个数必须大于0");
   }
 
   // 检查传入的参数是否都是整数
   if (
-    !Number.isInteger(min) ||
-    !Number.isInteger(max) ||
-    !Number.isInteger(count)
+    ![...exclude, min, max, count].every((num): boolean => {
+      if (isNaN(num)) return false;
+      if (!Number.isInteger(num)) return false;
+      else return true;
+    })
   ) {
     throw new Error("参数必须是整数");
   }
-  exclude.forEach((num) => {
-    if (!Number.isInteger(num)) {
-      throw new Error("排除的值必须是整数");
-    }
-  });
 
   // 生成可用数字列表
   const availableNumbers = [];
