@@ -1,13 +1,13 @@
 import handlers from "./api/mod.ts";
 import { generatorBadRequestResponse } from "./utils/response.ts";
 
+let logCount = 0;
 /**
  * 主函数
  * @param request 请求体
  * @returns 响应体
  */
 const main = async (request: Request): Promise<Response> => {
-  console.log(`${request.method}: ${request.url}`);
   for (const handlerKey in handlers) {
     try {
       const handlerFunction = handlers[handlerKey];
@@ -19,6 +19,12 @@ const main = async (request: Request): Promise<Response> => {
       continue;
     }
   }
+  if (logCount >= 100) {
+    console.clear();
+    logCount = 0;
+  }
+  console.log(`${request.method}: ${request.url}`);
+  logCount++;
 
   // 当没有合适的处理器时，返回错误信息
   return generatorBadRequestResponse(
