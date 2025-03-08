@@ -9,7 +9,7 @@ export const generatorOKResponse: GeneratorResponseFunction = (
     status: 200,
     statusText: "OK",
     headers: {
-      "Content-Type": "application",
+      "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
   });

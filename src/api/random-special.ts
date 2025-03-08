@@ -44,7 +44,7 @@ export default async (request: Request): Promise<Response> => {
     ]);
     return generatorOKResponse(JSON.stringify(result));
   } catch (_) {
-    // 如果失败就使用原始的排除方案
+    // 如果失败则使用原始排除方法
     try {
       const result: number[] = generators.randomInt(min, max, count, exclude);
       return generatorOKResponse(JSON.stringify(result));
