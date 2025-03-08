@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>工具箱主页</title>
+    <!-- Include Bootstrap CSS resource -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body class="p-0 m-0">
+    <!-- Root Element -->
+    <div id="root" class="container-fluid">
+      <!-- Information -->
+      <div class="row m-1">
+        <div class="col-12 border">
+          <div class="text-center h1">随机数字生成器</div>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div class="row m-1">
+        <!-- Sidebar -->
+        <div class="col-md-4 col-12 border">
+          <!-- Max Value -->
+          <div class="input-group my-3">
+            <div class="input-group-text">最大数字</div>
+            <input type="text" class="form-control" value="51" id="max-value" />
+          </div>
+          <!-- Min Value -->
+          <div class="input-group my-3">
+            <div class="input-group-text">最小数字</div>
+            <input type="text" class="form-control" value="1" id="min-value" />
+          </div>
+          <!-- Count Value -->
+          <div class="input-group my-3">
+            <div class="input-group-text">生成数量</div>
+            <input
+              type="text"
+              class="form-control"
+              value="1"
+              id="count-value"
+            />
+          </div>
+          <!-- Exclude Value -->
+          <div class="mt-3">
+            <div class="input-group">
+              <div class="input-group-text">排除数字</div>
+              <input
+                type="text"
+                class="form-control"
+                value="1"
+                id="exclude-value"
+              />
+            </div>
+            <div class="form-text ms-2">使用逗号分割</div>
+          </div>
+          <div class="row px-3 mt-1 mb-3">
+            <button
+              type="button"
+              class="btn btn-secondary col-12"
+              onclick="random()"
+            >
+              生成
+            </button>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-8 col-12 border">
+          <div class="h2 m-1" id="result">正在等待结果</div>
+        </div>
+      </div>
+    </div>
+    <!-- Include Bootstrap JavaScript Resource -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
+  </body>
+</html>

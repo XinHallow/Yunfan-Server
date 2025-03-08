@@ -2,7 +2,7 @@ import contentType from "../utils/content-type.ts";
 import { generatorBadRequestResponse } from "../utils/response.ts";
 import { join } from "@std/path";
 
-const pattern = new URLPattern({ pathname: "/:file" });
+const pattern = new URLPattern({ pathname: "/:file*" });
 
 export default async (request: Request): Promise<Response> => {
   // 检查请求
@@ -30,12 +30,15 @@ export default async (request: Request): Promise<Response> => {
     return new Response(content, {
       status: 200,
       statusText: "OK",
-      headers: { "Content-Type": responseContentType },
+      headers: {
+        "Content-Type": responseContentType,
+        "Access-Control-Allow-Origin": "*",
+      },
     });
   } catch (e) {
     if (e instanceof Deno.errors.NotFound) {
       return generatorBadRequestResponse(
-        JSON.stringify({ message: "未找到文件" })
+        JSON.stringify({ message: "未找到文件" }),
       );
     } else {
       throw new Error("未知错误");

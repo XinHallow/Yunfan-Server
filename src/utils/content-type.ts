@@ -8,6 +8,9 @@ const contentType: ContentType = {
   css: "text/css",
   js: "text/javascript",
   json: "application/json",
+  svg: "text/xml",
+  png: "image/png",
+  jpg: "image/jpeg",
 };
 
 export default contentType;
