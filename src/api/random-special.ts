@@ -45,20 +45,18 @@ export default async (request: Request): Promise<Response> => {
       status: 200,
       statusText: "OK",
     });
-  } catch (_) {}
-
-  // 尝试包含特殊排除的随机数
-  try {
-    const result: number[] = generators.randomInt(min, max, count, exclude);
-    return new Response(JSON.stringify(result), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 200,
-      statusText: "OK",
-    });
-  } catch (error) {
-    if (error instanceof Error) {
+  } catch (_) {
+    // 如果失败就使用原始的排除方案
+    try {
+      const result: number[] = generators.randomInt(min, max, count, exclude);
+      return new Response(JSON.stringify(result), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 200,
+        statusText: "OK",
+      });
+    } catch (_) {
       return new Response(
         JSON.stringify({
           message: "请确保输入的参数正确",
@@ -69,8 +67,6 @@ export default async (request: Request): Promise<Response> => {
           headers: { "Content-Type": "application/json" },
         }
       );
-    } else {
-      throw new Error("未知错误");
     }
   }
 };
