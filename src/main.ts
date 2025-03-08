@@ -1,4 +1,5 @@
 import handlers from "./api/mod.ts";
+import { generatorBadRequestResponse } from "./utils/response.ts";
 
 /**
  * 主函数
@@ -6,6 +7,7 @@ import handlers from "./api/mod.ts";
  * @returns 响应体
  */
 const main = async (request: Request): Promise<Response> => {
+  console.log(`${request.method}: ${request.url}`);
   for (const handlerKey in handlers) {
     try {
       const handlerFunction = handlers[handlerKey];
@@ -19,17 +21,8 @@ const main = async (request: Request): Promise<Response> => {
   }
 
   // 当没有合适的处理器时，返回错误信息
-  return new Response(
-    JSON.stringify({
-      message: "没有可用的API或页面",
-    }),
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 400,
-      statusText: "Bad Request",
-    }
+  return generatorBadRequestResponse(
+    JSON.stringify({ message: "未找到文件或可用的api" })
   );
 };
 
