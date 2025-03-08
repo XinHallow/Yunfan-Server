@@ -50,7 +50,7 @@ export default async (request: Request): Promise<Response> => {
       return generatorOKResponse(JSON.stringify(result));
     } catch (_) {
       return generatorBadRequestResponse(
-        JSON.stringify({ message: "生成随机数失败" })
+        JSON.stringify({ message: "生成随机数失败" }),
       );
     }
   }

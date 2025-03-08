@@ -5,7 +5,7 @@ interface Generator {
     min: number,
     max: number,
     count: number,
-    exclude: number[]
+    exclude: number[],
   ) => number[];
 }
 

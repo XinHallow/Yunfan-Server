@@ -10,7 +10,7 @@ export default (
   min: number,
   max: number,
   count: number,
-  exclude: number[]
+  exclude: number[],
 ): number[] => {
   // 检查传入的参数
   if (min > max) {

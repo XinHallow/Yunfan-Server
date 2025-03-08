@@ -22,7 +22,7 @@ const main = async (request: Request): Promise<Response> => {
 
   // 当没有合适的处理器时，返回错误信息
   return generatorBadRequestResponse(
-    JSON.stringify({ message: "未找到文件或可用的api" })
+    JSON.stringify({ message: "未找到文件或可用的api" }),
   );
 };
 

@@ -43,7 +43,7 @@ export default async (request: Request): Promise<Response> => {
   } catch (error) {
     if (error instanceof Error) {
       return generatorBadRequestResponse(
-        JSON.stringify({ message: error.message })
+        JSON.stringify({ message: error.message }),
       );
     } else {
       throw new Error("未知错误");
