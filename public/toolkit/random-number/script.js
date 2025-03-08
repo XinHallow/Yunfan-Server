@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-unused-vars
 "use strict";
 
 async function random() {
