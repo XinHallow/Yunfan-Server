@@ -21,7 +21,7 @@ const main = async (request: Request): Promise<Response> => {
   // 当没有合适的处理器时，返回错误信息
   return new Response(
     JSON.stringify({
-      message: "No APIs or pages are available at this time.",
+      message: "没有可用的API或页面",
     }),
     {
       headers: {

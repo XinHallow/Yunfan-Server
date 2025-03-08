@@ -1,3 +1,4 @@
+import randomSpecial from "./random-special.ts";
 import random from "./random.ts";
 
 interface Handlers {
@@ -6,4 +7,5 @@ interface Handlers {
 
 export default {
   random: random,
+  randomSpecial: randomSpecial
 } as Handlers;

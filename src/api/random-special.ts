@@ -1,6 +1,7 @@
 import generators from "../generators/mod.ts";
 
-const pattern = new URLPattern({ pathname: "/api/v1/random" });
+const pattern = new URLPattern({ pathname: "/api/v1/random-special" });
+const specialExclude: number[] = [27, 43, 44, 49, 51];
 
 export default async (request: Request): Promise<Response> => {
   // 检查请求
@@ -32,7 +33,21 @@ export default async (request: Request): Promise<Response> => {
     throw new Error("请求体错误");
   }
 
-  // 尝试随机数
+  // 尝试包含特殊排除的随机数
+  try {
+    const result: number[] = generators.randomInt(min, max, count, [
+      ...new Set<number>([...exclude, ...specialExclude]),
+    ]);
+    return new Response(JSON.stringify(result), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      status: 200,
+      statusText: "OK",
+    });
+  } catch (_) {}
+
+  // 尝试包含特殊排除的随机数
   try {
     const result: number[] = generators.randomInt(min, max, count, exclude);
     return new Response(JSON.stringify(result), {
