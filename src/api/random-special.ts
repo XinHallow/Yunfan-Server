@@ -1,4 +1,8 @@
 import generators from "../generators/mod.ts";
+import {
+  generatorBadRequestResponse,
+  generatorOKResponse,
+} from "../utils/response.ts";
 
 const pattern = new URLPattern({ pathname: "/api/v1/random-special" });
 const specialExclude: number[] = [27, 43, 44, 49, 51];
@@ -38,34 +42,15 @@ export default async (request: Request): Promise<Response> => {
     const result: number[] = generators.randomInt(min, max, count, [
       ...new Set<number>([...exclude, ...specialExclude]),
     ]);
-    return new Response(JSON.stringify(result), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 200,
-      statusText: "OK",
-    });
+    return generatorOKResponse(JSON.stringify(result));
   } catch (_) {
     // 如果失败就使用原始的排除方案
     try {
       const result: number[] = generators.randomInt(min, max, count, exclude);
-      return new Response(JSON.stringify(result), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        status: 200,
-        statusText: "OK",
-      });
+      return generatorOKResponse(JSON.stringify(result));
     } catch (_) {
-      return new Response(
-        JSON.stringify({
-          message: "请确保输入的参数正确",
-        }),
-        {
-          status: 400,
-          statusText: "Bad Request",
-          headers: { "Content-Type": "application/json" },
-        }
+      return generatorBadRequestResponse(
+        JSON.stringify({ message: "生成随机数失败" })
       );
     }
   }

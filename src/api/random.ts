@@ -1,4 +1,8 @@
 import generators from "../generators/mod.ts";
+import {
+  generatorBadRequestResponse,
+  generatorOKResponse,
+} from "../utils/response.ts";
 
 const pattern = new URLPattern({ pathname: "/api/v1/random" });
 
@@ -35,24 +39,11 @@ export default async (request: Request): Promise<Response> => {
   // 尝试随机数
   try {
     const result: number[] = generators.randomInt(min, max, count, exclude);
-    return new Response(JSON.stringify(result), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 200,
-      statusText: "OK",
-    });
+    return generatorOKResponse(JSON.stringify(result));
   } catch (error) {
     if (error instanceof Error) {
-      return new Response(
-        JSON.stringify({
-          message: "请确保输入的参数正确",
-        }),
-        {
-          status: 400,
-          statusText: "Bad Request",
-          headers: { "Content-Type": "application/json" },
-        }
+      return generatorBadRequestResponse(
+        JSON.stringify({ message: error.message })
       );
     } else {
       throw new Error("未知错误");
