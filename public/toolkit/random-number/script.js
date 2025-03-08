@@ -25,25 +25,22 @@ async function random() {
   });
 
   // 向服务器发送随机
-  const fetchResult = await fetch(
-    "https://yunfan-server.deno.dev/api/v1/random-special",
-    {
-      body: {
-        min,
-        max,
-        count,
-        exclude,
-      },
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    }
-  );
+  const fetchResult = await fetch("http://localhost/api/v1/random-special", {
+    body: JSON.stringify({
+      min,
+      max,
+      count,
+      exclude,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
   const body = await fetchResult.json();
   if (body instanceof Array) {
     document.querySelector("#result").textContent = body.join(", ");
   } else {
-    document.querySelector("#result").textContent = body;
+    document.querySelector("#result").textContent = body.message;
   }
 }
