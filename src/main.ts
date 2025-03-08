@@ -1,4 +1,4 @@
-import handlers from "./handler/mod.ts";
+import handlers from "./api/mod.ts";
 
 /**
  * 主函数
