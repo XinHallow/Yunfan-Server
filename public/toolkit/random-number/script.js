@@ -26,7 +26,7 @@ async function random() {
   });
 
   // 向服务器发送随机
-  const fetchResult = await fetch("http://localhost/api/v1/random-special", {
+  const fetchResult = await fetch("https://yunfan-server.deno.dev/api/v1/random-special", {
     body: JSON.stringify({
       min,
       max,
