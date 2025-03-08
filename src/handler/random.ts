@@ -15,7 +15,7 @@ export default async (request: Request): Promise<Response> => {
   }
 
   // 处理请求体
-  return await request.json().then((value) => {
+  const response = await request.json().then((value) => {
     const { max, min, count, exclude } = value;
     if (!max || !min || !count || !exclude) {
       throw new Error("请求体格式错误");
@@ -39,4 +39,5 @@ export default async (request: Request): Promise<Response> => {
       }
     }
   });
+  return response;
 };
