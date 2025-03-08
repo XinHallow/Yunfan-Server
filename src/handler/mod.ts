@@ -1,9 +1,9 @@
-import randomAPI from "./random.ts";
+import random from "./random.ts";
 
 interface Handlers {
   [key: string]: (req: Request) => Promise<Response>;
 }
 
 export default {
-  random: randomAPI,
+  random: random,
 } as Handlers;

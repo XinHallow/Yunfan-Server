@@ -15,29 +15,38 @@ export default async (request: Request): Promise<Response> => {
   }
 
   // 处理请求体
-  const response = await request.json().then((value) => {
-    const { max, min, count, exclude } = value;
-    if (!max || !min || !count || !exclude) {
-      throw new Error("请求体格式错误");
-    }
+  const { max, min, count, exclude } = await request.json();
 
-    // 尝试随机数
-    try {
-      const result: number[] = generators.randomInt(min, max, count, exclude);
-      return new Response(JSON.stringify(result), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        status: 200,
-        statusText: "OK",
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        throw error;
+  // 检查请求体参数
+  if (
+    ![max, min, count, ...exclude].every((value): boolean => {
+      if (isNaN(value)) {
+        return false;
+      } else if (!Number.isInteger(value)) {
+        return false;
       } else {
-        throw new Error("未知错误");
+        return true;
       }
+    })
+  ) {
+    throw new Error("请求体错误");
+  }
+
+  // 尝试随机数
+  try {
+    const result: number[] = generators.randomInt(min, max, count, exclude);
+    return new Response(JSON.stringify(result), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      status: 200,
+      statusText: "OK",
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new Error("未知错误");
     }
-  });
-  return response;
+  }
 };
