@@ -2,7 +2,7 @@ import contentType from "../utils/content-type.ts";
 import { generatorBadRequestResponse } from "../utils/response.ts";
 import { join } from "@std/path";
 
-const pattern = new URLPattern({ pathname: "/:file*" });
+const pattern = new URLPattern({ pathname: "/file/:file*" });
 
 export default async (request: Request): Promise<Response> => {
   // 检查请求
