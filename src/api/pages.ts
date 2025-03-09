@@ -36,7 +36,7 @@ export default async (request: Request): Promise<Response> => {
   } catch (e) {
     if (e instanceof Deno.errors.NotFound) {
       return generatorBadRequestResponse(
-        JSON.stringify({ message: "未找到文件" }),
+        JSON.stringify({ message: "未找到页面" }),
       );
     } else {
       throw new Error("未知错误");
