@@ -3,7 +3,8 @@
     "dev": "deno run --watch --allow-net --allow-read=./public src/main.ts"
   },
   "imports": {
-    "@std/path": "jsr:@std/path@^1.0.0"
+    "@std/path": "jsr:@std/path@^1.0.0",
+    "@superstruct": "jsr:@superstruct/core@^2.0.2"
   },
   "unstable": [""],
   "deploy": {
