@@ -2,7 +2,6 @@
 "use strict";
 
 async function random() {
-  console.clear();
 
   // 获取数值字符串
   const min = parseInt(document.querySelector("#min-value").value);
@@ -19,6 +18,7 @@ async function random() {
     document.querySelector("#result").textContent = "请在输入框输入数字!";
     return;
   }
+
   exclude.every((value) => {
     if (isNaN(value) || typeof value !== "number") {
       document.querySelector("#result").textContent = "请在输入框输入数字!";
@@ -26,7 +26,7 @@ async function random() {
   });
 
   // 向服务器发送随机
-  const fetchResult = await fetch("https://yunfan-server.deno.dev/api/v1/random-special", {
+  const fetchResult = await fetch("http://localhost/api/v1/random-special", {
     body: JSON.stringify({
       min,
       max,
@@ -38,6 +38,7 @@ async function random() {
     },
     method: "POST",
   });
+
   const body = await fetchResult.json();
   if (body instanceof Array) {
     document.querySelector("#result").textContent = body.join(", ");
