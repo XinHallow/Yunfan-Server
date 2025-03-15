@@ -1,47 +1,53 @@
-import contentType from "../utils/content-type.ts";
-import { generatorBadRequestResponse } from "../utils/response.ts";
 import { join } from "@std/path";
+import {
+  generateBadRequestResponse,
+  generateOKResponse,
+} from "../utils/response.ts";
+import { ApiBase } from "./base.ts";
+import { contentType } from "../utils/content-type.ts";
 
-const pattern = new URLPattern({ pathname: "/file/:file*" });
-
-export default async (request: Request): Promise<Response> => {
-  // 检查请求
-  if (request.method !== "GET") {
-    throw new Error("不允许的请求方法");
-  }
-  if (!pattern.test(request.url)) {
-    throw new Error("请求路径不匹配");
-  }
-
-  // 获取文件路径
-  const match = pattern.exec(request.url);
-  if (!match?.pathname.groups.file) {
-    throw new Error("请求错误");
-  }
-  const requireFilepath = match.pathname.groups.file;
-  const filepath = join(".", "public", requireFilepath);
-
-  // 尝试获取文件
-  try {
-    const content = await Deno.readFile(filepath);
-    const responseContentType =
-      contentType[requireFilepath.slice(requireFilepath.lastIndexOf(".") + 1)];
-    // 返回结果
-    return new Response(content, {
-      status: 200,
-      statusText: "OK",
-      headers: {
-        "Content-Type": responseContentType,
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-  } catch (e) {
-    if (e instanceof Deno.errors.NotFound) {
-      return generatorBadRequestResponse(
-        JSON.stringify({ message: "未找到文件" }),
+class FileGetter extends ApiBase {
+  override async resolve(
+    _request: Request,
+    urlPatternResult: URLPatternResult | null
+  ): Promise<Response> {
+    // 检查是否输入了文件名
+    if (!urlPatternResult || !urlPatternResult.pathname.groups["file"]) {
+      return generateBadRequestResponse(
+        JSON.stringify({ message: "未输入需要获取的文件" })
       );
-    } else {
-      throw new Error("未知错误");
+    }
+
+    // 尝试读取文件
+    try {
+      const requireFilepath = urlPatternResult.pathname.groups["file"];
+      const fileContent = await Deno.readFile(
+        join(".", "public", requireFilepath)
+      );
+      const fileExtension = requireFilepath.substring(
+        requireFilepath.lastIndexOf(".") + 1
+      );
+      const fileContentType = contentType[fileExtension]
+        ? contentType[fileExtension]
+        : "application/octet-stream";
+
+      return generateOKResponse(fileContent, fileContentType);
+    } catch (error) {
+      // 当读取文件出现错误
+      if (error instanceof Deno.errors.NotFound) {
+        return generateBadRequestResponse(
+          JSON.stringify({ message: "未找到文件" })
+        );
+      } else {
+        return generateBadRequestResponse(
+          JSON.stringify({ message: "读取文件失败" })
+        );
+      }
     }
   }
-};
+}
+
+export default new FileGetter(
+  "GET",
+  new URLPattern({ pathname: "/file/:file*" })
+);

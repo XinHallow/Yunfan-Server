@@ -1,15 +1,12 @@
-import randomSpecial from "./random-special.ts";
-import random from "./random.ts";
+import { ApiBase } from "./base.ts";
 import file from "./file.ts";
-import pages from "./pages.ts";
+import randomSpecial from "./random/special.ts";
+import randomNormal from "./random/normal.ts";
 
-interface Handlers {
-  [key: string]: (req: Request) => Promise<Response>;
-}
-
-export default {
-  random: random,
-  randomSpecial: randomSpecial,
+export const apis: {
+  [key: string]: ApiBase;
+} = {
   file: file,
-  pages: pages,
-} as Handlers;
+  randomSpecial: randomSpecial,
+  randomNormal: randomNormal,
+};

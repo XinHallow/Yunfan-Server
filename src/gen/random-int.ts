@@ -1,5 +1,5 @@
 /**
- * 根据设置生成随机整数数组
+ * 根据设置生成随机整数数组, 传入参数时可以不检查因为会返回错误
  * @param min 最小值(>0)
  * @param max 最大值(>0)
  * @param count 生成个数(>0)
@@ -10,7 +10,7 @@ export default (
   min: number,
   max: number,
   count: number,
-  exclude: number[],
+  exclude: number[]
 ): number[] => {
   // 检查传入的参数
   if (min > max) {
