@@ -1,6 +1,6 @@
 import { object, array, number } from "@superstruct";
 
-export interface requestBody {
+export interface RequestBody {
   max: number;
   min: number;
   count: number;

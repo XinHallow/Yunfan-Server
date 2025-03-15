@@ -4,7 +4,7 @@ import {
   generateOKResponse,
 } from "../../utils/response.ts";
 import randomInt from "../../gen/random-int.ts";
-import { requestBody, struct } from "./interface.ts";
+import { RequestBody, struct } from "./random-interface.ts";
 import { assert } from "@superstruct";
 
 class RandomNormal extends ApiBase {
@@ -12,7 +12,7 @@ class RandomNormal extends ApiBase {
     request: Request,
     _urlPatternResult: URLPatternResult | null
   ): Promise<Response> {
-    const body: requestBody = await request.json();
+    const body: RequestBody = await request.json();
 
     try {
       assert(body, struct);
