@@ -29,7 +29,7 @@ class HomeworkSetter extends ApiBase {
     kv.close();
 
     // When today's homework is not exist
-    if (!content) {
+    if (!content.value) {
       return generateOKResponse(
         JSON.stringify({ message: "未查找到今天的作业" }),
         "application/json"
@@ -37,11 +37,11 @@ class HomeworkSetter extends ApiBase {
     }
 
     // Return ok response and message
-    return generateOKResponse(JSON.stringify(content), "application/json");
+    return generateOKResponse(JSON.stringify(content.value), "application/json");
   }
 }
 
 export default new HomeworkSetter(
   "POST",
-  new URLPattern({ pathname: "/api/v1/homework-set" })
+  new URLPattern({ pathname: "/api/v1/homework-get" })
 );

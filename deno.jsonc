@@ -1,12 +1,12 @@
 {
   "tasks": {
-    "dev": "deno run --watch --allow-net --allow-read=./public src/main.ts"
+    "dev": "deno run --watch --allow-net --allow-read=./public --allow-read=./sql --allow-write=./sql src/main.ts"
   },
   "imports": {
     "@std/path": "jsr:@std/path@^1.0.0",
     "@superstruct": "jsr:@superstruct/core@^2.0.2"
   },
-  "unstable": [""],
+  "unstable": ["kv"],
   "deploy": {
     "project": "3d985eee-fa3c-4158-bc02-2a5f29bdd483",
     "exclude": ["**/node_modules"],
