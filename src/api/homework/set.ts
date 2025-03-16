@@ -1,6 +1,4 @@
-import { assert } from "@superstruct";
 import { ApiBase } from "../base.ts";
-import { SetRequestBody, SetStruct } from "./homework-interface.ts";
 import {
   generateBadRequestResponse,
   generateOKResponse,
@@ -9,33 +7,66 @@ import {
 class HomeworkSetter extends ApiBase {
   override async resolve(
     request: Request,
-    _urlPatternResult: URLPatternResult | null
+    urlPatternResult: URLPatternResult | null
   ): Promise<Response> {
-    const body: SetRequestBody = await request.json();
+    // Parse body
+    const body: {
+      chinese: string[];
+      math: string[];
+      english: string[];
+    } = await request.json();
 
     // Check request body
-    try {
-      assert(body, SetStruct);
-    } catch (_) {
+    if (!body.chinese || !body.math || !body.english) {
       return generateBadRequestResponse(
-        JSON.stringify({ message: "传入的请求体出现错误" })
+        JSON.stringify({ message: "传入作业出现问题" })
+      );
+    }
+
+    // Check date
+    if (!urlPatternResult || !urlPatternResult.pathname.groups["date"]) {
+      return generateBadRequestResponse(
+        JSON.stringify({ message: "写入时间未指定" })
+      );
+    }
+    const getDate = urlPatternResult.pathname.groups["date"];
+
+    // Validate homework data
+    if (
+      !Array.isArray(body.chinese) ||
+      !Array.isArray(body.math) ||
+      !Array.isArray(body.english) ||
+      body.chinese.some((item) => typeof item !== "string") ||
+      body.math.some((item) => typeof item !== "string") ||
+      body.english.some((item) => typeof item !== "string")
+    ) {
+      return generateBadRequestResponse(
+        JSON.stringify({ message: "作业数据格式不正确" })
       );
     }
 
     // Try write data to kv file
-    const kv = await Deno.openKv();
-    await kv.set([body.date], body.content);
-    kv.close();
-
-    // Return ok response and message
-    return generateOKResponse(
-      JSON.stringify({ message: "完成写入" }),
-      "application/json"
-    );
+    let kv;
+    try {
+      kv = await Deno.openKv();
+      await kv.set([getDate], body);
+      return generateOKResponse(
+        JSON.stringify({ message: "完成写入" }),
+        "application/json"
+      );
+    } catch (_) {
+      return generateBadRequestResponse(
+        JSON.stringify({ message: "写入失败" })
+      );
+    } finally {
+      if (kv) {
+        kv.close();
+      }
+    }
   }
 }
 
 export default new HomeworkSetter(
   "POST",
-  new URLPattern({ pathname: "/api/v1/homework-set" })
+  new URLPattern({ pathname: "/api/v1/set-homework/:date" })
 );
