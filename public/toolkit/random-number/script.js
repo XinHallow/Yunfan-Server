@@ -33,6 +33,8 @@ async function random() {
   url.searchParams.set("exclude", exclude.join(","));
   const fetchResult = await fetch(url, {
     method: "GET",
+    mode: "cors",
+    credentials: "include",
   });
 
   const body = await fetchResult.json();
