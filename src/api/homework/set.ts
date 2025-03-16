@@ -23,7 +23,7 @@ class HomeworkSetter extends ApiBase {
     }
 
     // Try write data to kv file
-    const kv = await Deno.openKv("https://api.deno.com/databases/259ddd16-fde5-4db3-a76e-5328f40f72b3/connect");
+    const kv = await Deno.openKv();
     await kv.set([body.date], body.content);
     kv.close();
 

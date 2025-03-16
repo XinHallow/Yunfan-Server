@@ -3,6 +3,8 @@ import { apis } from "./api/mod.ts";
 import fallback from "./api/fallback.ts";
 
 Deno.serve({ port: 80 }, async (request: Request): Promise<Response> => {
+  console.info(`Receive request: ${request.url}`);
+
   // 遍历所有注册的API
   for (const apiName in apis) {
     const api = apis[apiName];
