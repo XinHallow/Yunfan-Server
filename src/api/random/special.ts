@@ -52,6 +52,5 @@ export default new RandomSpecial(
   "GET",
   new URLPattern({
     pathname: "/api/v1/random/special",
-    search:""
   })
 );
