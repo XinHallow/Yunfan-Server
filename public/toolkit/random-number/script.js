@@ -26,7 +26,7 @@ async function random() {
   });
 
   // 向服务器发送随机数请求
-  const url = new URL("http://localhost/api/v1/random/special");
+  const url = new URL("https://localhost/api/v1/random/special");
   url.searchParams.set("min", min);
   url.searchParams.set("max", max);
   url.searchParams.set("count", count);
