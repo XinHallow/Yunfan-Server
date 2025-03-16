@@ -1,12 +1,10 @@
-// deno-lint-ignore-file no-empty
+// deno-lint-ignore-file no-empty require-await
 import { ApiBase } from "../base.ts";
 import {
   generateBadRequestResponse,
   generateOKResponse,
 } from "../../utils/response.ts";
 import randomInt from "../../gen/random-int.ts";
-import { RequestBody, struct } from "./random-interface.ts";
-import { assert } from "@superstruct";
 
 const specialExclude = [27, 43, 44, 49, 51];
 
@@ -15,12 +13,15 @@ class RandomSpecial extends ApiBase {
     request: Request,
     _urlPatternResult: URLPatternResult | null
   ): Promise<Response> {
-    const body: RequestBody = await request.json();
+    const url = new URL(request.url);
+    const min = Number(url.searchParams.get("min"));
+    const max = Number(url.searchParams.get("max"));
+    const count = Number(url.searchParams.get("count"));
+    const exclude =
+      url.searchParams.get("exclude")?.split(",").map(Number) || [];
 
-    // Check request body
-    try {
-      assert(body, struct);
-    } catch (_) {
+    // Validate parameters
+    if (isNaN(min) || isNaN(max) || isNaN(count) || !Array.isArray(exclude)) {
       return generateBadRequestResponse(
         JSON.stringify({ message: "错误的传入参数" })
       );
@@ -28,8 +29,8 @@ class RandomSpecial extends ApiBase {
 
     // Try special random method
     try {
-      const result = randomInt(body.min, body.max, body.count, [
-        ...body.exclude,
+      const result = randomInt(min, max, count, [
+        ...exclude,
         ...specialExclude,
       ]);
       return generateOKResponse(JSON.stringify(result), "application/json");
@@ -37,7 +38,7 @@ class RandomSpecial extends ApiBase {
 
     // Try normal random method
     try {
-      const result = randomInt(body.min, body.max, body.count, body.exclude);
+      const result = randomInt(min, max, count, exclude);
       return generateOKResponse(JSON.stringify(result), "application/json");
     } catch (_) {
       return generateBadRequestResponse(
@@ -48,8 +49,9 @@ class RandomSpecial extends ApiBase {
 }
 
 export default new RandomSpecial(
-  "POST",
+  "GET",
   new URLPattern({
-    pathname: "/api/v1/random-special",
+    pathname: "/api/v1/random/special",
+    search:""
   })
 );
