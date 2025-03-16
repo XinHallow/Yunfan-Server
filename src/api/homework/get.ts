@@ -54,5 +54,5 @@ class HomeworkGetter extends ApiBase {
 
 export default new HomeworkGetter(
   "GET",
-  new URLPattern({ pathname: "/api/v1/get-homework/:date" })
+  new URLPattern({ pathname: "/api/v1/homework/get/:date" })
 );

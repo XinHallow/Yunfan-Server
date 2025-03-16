@@ -17,9 +17,16 @@ class HomeworkSetter extends ApiBase {
     } = await request.json();
 
     // Check request body
-    if (!body.chinese || !body.math || !body.english) {
+    if (
+      !Array.isArray(body.chinese) ||
+      !Array.isArray(body.math) ||
+      !Array.isArray(body.english) ||
+      [...body.chinese, ...body.math, ...body.english].some(
+        (value) => typeof value !== "string"
+      )
+    ) {
       return generateBadRequestResponse(
-        JSON.stringify({ message: "传入作业出现问题" })
+        JSON.stringify({ message: "作业数据格式不正确" })
       );
     }
 
@@ -30,20 +37,6 @@ class HomeworkSetter extends ApiBase {
       );
     }
     const getDate = urlPatternResult.pathname.groups["date"];
-
-    // Validate homework data
-    if (
-      !Array.isArray(body.chinese) ||
-      !Array.isArray(body.math) ||
-      !Array.isArray(body.english) ||
-      body.chinese.some((item) => typeof item !== "string") ||
-      body.math.some((item) => typeof item !== "string") ||
-      body.english.some((item) => typeof item !== "string")
-    ) {
-      return generateBadRequestResponse(
-        JSON.stringify({ message: "作业数据格式不正确" })
-      );
-    }
 
     // Try write data to kv file
     let kv;
@@ -68,5 +61,5 @@ class HomeworkSetter extends ApiBase {
 
 export default new HomeworkSetter(
   "POST",
-  new URLPattern({ pathname: "/api/v1/set-homework/:date" })
+  new URLPattern({ pathname: "/api/v1/homework/set/:date" })
 );
