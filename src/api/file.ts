@@ -11,14 +11,14 @@ class FileGetter extends ApiBase {
     _request: Request,
     urlPatternResult: URLPatternResult | null
   ): Promise<Response> {
-    // 检查是否输入了文件名
+    // Ensure file entered
     if (!urlPatternResult || !urlPatternResult.pathname.groups["file"]) {
       return generateBadRequestResponse(
         JSON.stringify({ message: "未输入需要获取的文件" })
       );
     }
 
-    // 尝试读取文件
+    // Try read file
     try {
       const requireFilepath = urlPatternResult.pathname.groups["file"];
       const fileContent = await Deno.readFile(
@@ -33,7 +33,7 @@ class FileGetter extends ApiBase {
 
       return generateOKResponse(fileContent, fileContentType);
     } catch (error) {
-      // 当读取文件出现错误
+      // When file not found
       if (error instanceof Deno.errors.NotFound) {
         return generateBadRequestResponse(
           JSON.stringify({ message: "未找到文件" })

@@ -7,7 +7,7 @@ class Fallback extends ApiBase {
     _request: Request,
     urlPatternResult: URLPatternResult | null
   ): Promise<Response> {
-    // 当请求的是根目录下时直接返回index.html
+    // If no pathname return root index.html
     if (!urlPatternResult || !urlPatternResult.pathname.groups["page"]) {
       return generateOKResponse(
         await Deno.readFile(join(".", "public", "index.html")),
@@ -15,7 +15,7 @@ class Fallback extends ApiBase {
       );
     }
 
-    // 生成文件路径
+    // Generate filepath
     const filePath = join(
       ".",
       "public",
@@ -23,12 +23,12 @@ class Fallback extends ApiBase {
       "index.html"
     );
 
-    // 检查文件是否存在
+    // Ensure file exist
     const fileExists = await Deno.stat(filePath)
       .then(() => true)
       .catch(() => false);
 
-    // 当不存在时重定向
+    // If not found redirect to root
     if (!fileExists) {
       return new Response(null, {
         status: 302,
@@ -36,7 +36,7 @@ class Fallback extends ApiBase {
       });
     }
 
-    // 当存在时返回请求目录下的index.html
+    // If file exist return this file
     const fileContent = await Deno.readFile(filePath);
     return generateOKResponse(fileContent, "text/html");
   }

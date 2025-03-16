@@ -1,10 +1,10 @@
 /**
- * 允许的HTTP请求方法
+ * Allowed HTTP method
  */
 export type AllowedHttpMethod = "POST" | "GET";
 
 /**
- * 请求处理器接口
+ * Resolver interface 
  */
 export interface RequestResolver {
   resolve(
@@ -14,7 +14,7 @@ export interface RequestResolver {
 }
 
 /**
- * 请求处理器基类
+ * Resolver base class
  */
 export abstract class ApiBase implements RequestResolver {
   constructor(allowedMethod: AllowedHttpMethod, urlPattern: URLPattern) {
@@ -23,8 +23,8 @@ export abstract class ApiBase implements RequestResolver {
   }
 
   /**
-   * 处理请求
-   * @param request 请求对象
+   * Resolve request
+   * @param request request body
    */
   abstract resolve(
     request: Request,
@@ -32,12 +32,12 @@ export abstract class ApiBase implements RequestResolver {
   ): Promise<Response>;
 
   /**
-   * 允许使用的HTTP方法，如果不匹配将不会调用resolve方法
+   * Allowed HTTP method
    */
   allowedMethod: AllowedHttpMethod;
 
   /**
-   * 请求的URL模式匹配器，如果不匹配将不会调用resolve方法
+   * URL pattern for verify url
    */
   urlPattern: URLPattern;
 }
