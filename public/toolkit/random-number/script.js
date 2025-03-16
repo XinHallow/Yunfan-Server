@@ -2,7 +2,6 @@
 "use strict";
 
 async function random() {
-
   // 获取数值字符串
   const min = parseInt(document.querySelector("#min-value").value);
   const max = parseInt(document.querySelector("#max-value").value);
@@ -33,8 +32,6 @@ async function random() {
   url.searchParams.set("exclude", exclude.join(","));
   const fetchResult = await fetch(url, {
     method: "GET",
-    mode: "cors",
-    credentials: "include",
   });
 
   const body = await fetchResult.json();
