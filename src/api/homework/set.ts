@@ -5,7 +5,6 @@ import {
   generateBadRequestResponse,
   generateOKResponse,
 } from "../../utils/response.ts";
-import { join } from "@std/path";
 
 class HomeworkSetter extends ApiBase {
   override async resolve(
@@ -24,7 +23,7 @@ class HomeworkSetter extends ApiBase {
     }
 
     // Try write data to kv file
-    const kv = await Deno.openKv(join(".", "sql", "homework.kv"));
+    const kv = await Deno.openKv("https://api.deno.com/databases/259ddd16-fde5-4db3-a76e-5328f40f72b3/connect");
     await kv.set([body.date], body.content);
     kv.close();
 
