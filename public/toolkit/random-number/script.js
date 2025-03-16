@@ -25,18 +25,14 @@ async function random() {
     }
   });
 
-  // 向服务器发送随机
-  const fetchResult = await fetch("https://yunfan-server.deno.dev/api/v1/random-special", {
-    body: JSON.stringify({
-      min,
-      max,
-      count,
-      exclude,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
+  // 向服务器发送随机数请求
+  const url = new URL("https://yunfan-server.deno.dev/api/v1/random/special");
+  url.searchParams.set("min", min);
+  url.searchParams.set("max", max);
+  url.searchParams.set("count", count);
+  url.searchParams.set("exclude", exclude.join(","));
+  const fetchResult = await fetch(url, {
+    method: "GET",
   });
 
   const body = await fetchResult.json();
