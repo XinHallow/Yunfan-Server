@@ -1,5 +1,6 @@
 import { object, array, number } from "@superstruct";
 
+// Request body interface
 export interface RequestBody {
   max: number;
   min: number;
@@ -7,6 +8,7 @@ export interface RequestBody {
   exclude: number[];
 }
 
+// Request body
 export const struct = object({
   min: number(),
   max: number(),

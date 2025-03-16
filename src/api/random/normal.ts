@@ -14,6 +14,7 @@ class RandomNormal extends ApiBase {
   ): Promise<Response> {
     const body: RequestBody = await request.json();
 
+    // Check request body
     try {
       assert(body, struct);
     } catch (_) {
@@ -22,7 +23,7 @@ class RandomNormal extends ApiBase {
       );
     }
 
-    // 尝试随机数
+    // Try random number
     try {
       const result = randomInt(body.min, body.max, body.count, body.exclude);
       return generateOKResponse(JSON.stringify(result), "application/json");

@@ -17,6 +17,7 @@ class RandomSpecial extends ApiBase {
   ): Promise<Response> {
     const body: RequestBody = await request.json();
 
+    // Check request body
     try {
       assert(body, struct);
     } catch (_) {
@@ -25,7 +26,7 @@ class RandomSpecial extends ApiBase {
       );
     }
 
-    // 尝试特殊随机数
+    // Try special random method
     try {
       const result = randomInt(body.min, body.max, body.count, [
         ...body.exclude,
@@ -34,7 +35,7 @@ class RandomSpecial extends ApiBase {
       return generateOKResponse(JSON.stringify(result), "application/json");
     } catch (_) {}
 
-    // 如果失败则尝试正常随机数
+    // Try normal random method
     try {
       const result = randomInt(body.min, body.max, body.count, body.exclude);
       return generateOKResponse(JSON.stringify(result), "application/json");
