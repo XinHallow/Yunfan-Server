@@ -9,12 +9,12 @@ import { contentType } from "../utils/content-type.ts";
 class FileGetter extends ApiBase {
   override async resolve(
     _request: Request,
-    urlPatternResult: URLPatternResult | null
+    urlPatternResult: URLPatternResult | null,
   ): Promise<Response> {
     // Ensure file entered
     if (!urlPatternResult || !urlPatternResult.pathname.groups["file"]) {
       return generateBadRequestResponse(
-        JSON.stringify({ message: "未输入需要获取的文件" })
+        JSON.stringify({ message: "未输入需要获取的文件" }),
       );
     }
 
@@ -22,10 +22,10 @@ class FileGetter extends ApiBase {
     try {
       const requireFilepath = urlPatternResult.pathname.groups["file"];
       const fileContent = await Deno.readFile(
-        join(".", "public", requireFilepath)
+        join(".", "public", requireFilepath),
       );
       const fileExtension = requireFilepath.substring(
-        requireFilepath.lastIndexOf(".") + 1
+        requireFilepath.lastIndexOf(".") + 1,
       );
       const fileContentType = contentType[fileExtension]
         ? contentType[fileExtension]
@@ -36,11 +36,11 @@ class FileGetter extends ApiBase {
       // When file not found
       if (error instanceof Deno.errors.NotFound) {
         return generateBadRequestResponse(
-          JSON.stringify({ message: "未找到文件" })
+          JSON.stringify({ message: "未找到文件" }),
         );
       } else {
         return generateBadRequestResponse(
-          JSON.stringify({ message: "读取文件失败" })
+          JSON.stringify({ message: "读取文件失败" }),
         );
       }
     }
@@ -49,5 +49,5 @@ class FileGetter extends ApiBase {
 
 export default new FileGetter(
   "GET",
-  new URLPattern({ pathname: "/file/:file*" })
+  new URLPattern({ pathname: "/file/:file*" }),
 );

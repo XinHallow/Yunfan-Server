@@ -7,14 +7,14 @@ import {
 class HomeworkGetter extends ApiBase {
   override async resolve(
     _request: Request,
-    urlPatternResult: URLPatternResult | null
+    urlPatternResult: URLPatternResult | null,
   ): Promise<Response> {
     // Ensure date entered
     if (!urlPatternResult || !urlPatternResult.pathname.groups["date"]) {
       return generateBadRequestResponse(
         JSON.stringify({
           message: "请求时间未指定",
-        })
+        }),
       );
     }
 
@@ -30,19 +30,19 @@ class HomeworkGetter extends ApiBase {
         return generateBadRequestResponse(
           JSON.stringify({
             message: "未查找到指定时间的作业",
-          })
+          }),
         );
       }
 
       return generateOKResponse(
         JSON.stringify(result.value),
-        "application/json"
+        "application/json",
       );
     } catch (_) {
       return generateBadRequestResponse(
         JSON.stringify({
           message: "获取作业数据失败",
-        })
+        }),
       );
     } finally {
       if (kv) {
@@ -54,5 +54,5 @@ class HomeworkGetter extends ApiBase {
 
 export default new HomeworkGetter(
   "GET",
-  new URLPattern({ pathname: "/api/v1/homework/get/:date" })
+  new URLPattern({ pathname: "/api/v1/homework/get/:date" }),
 );

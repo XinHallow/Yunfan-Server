@@ -4,12 +4,12 @@
 export type AllowedHttpMethod = "POST" | "GET";
 
 /**
- * Resolver interface 
+ * Resolver interface
  */
 export interface RequestResolver {
   resolve(
     request: Request,
-    urlPatternResult: URLPatternResult | null
+    urlPatternResult: URLPatternResult | null,
   ): Promise<Response>;
 }
 
@@ -28,7 +28,7 @@ export abstract class ApiBase implements RequestResolver {
    */
   abstract resolve(
     request: Request,
-    urlPatternResult: URLPatternResult | null
+    urlPatternResult: URLPatternResult | null,
   ): Promise<Response>;
 
   /**

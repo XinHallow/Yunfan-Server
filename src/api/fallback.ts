@@ -5,13 +5,13 @@ import { ApiBase } from "./base.ts";
 class Fallback extends ApiBase {
   override async resolve(
     _request: Request,
-    urlPatternResult: URLPatternResult | null
+    urlPatternResult: URLPatternResult | null,
   ): Promise<Response> {
     // If no pathname return root index.html
     if (!urlPatternResult || !urlPatternResult.pathname.groups["page"]) {
       return generateOKResponse(
         await Deno.readFile(join(".", "public", "index.html")),
-        "text/html"
+        "text/html",
       );
     }
 
@@ -20,7 +20,7 @@ class Fallback extends ApiBase {
       ".",
       "public",
       urlPatternResult.pathname.groups["page"],
-      "index.html"
+      "index.html",
     );
 
     // Ensure file exist
@@ -44,5 +44,5 @@ class Fallback extends ApiBase {
 
 export default new Fallback(
   "GET",
-  new URLPattern({ pathname: "/:page*" })
+  new URLPattern({ pathname: "/:page*" }),
 );

@@ -24,7 +24,7 @@ export const generateBadRequestResponse = (body: BodyInit): Response => {
  */
 export const generateOKResponse = (
   body: BodyInit,
-  contentType: string
+  contentType: string,
 ): Response => {
   return new Response(body, {
     headers: {
