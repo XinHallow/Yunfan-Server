@@ -2,6 +2,7 @@ import { marked } from "marked";
 import { Context, Router } from "@oak/oak";
 import { matchTime } from "../utils/mod.ts";
 import { join } from "@std/path/join";
+import { headers } from "../utils/headers.ts";
 
 const router = new Router();
 
@@ -15,6 +16,7 @@ router.get("/homework/:date", async (ctx: Context) => {
   if (!matchResult) {
     ctx.response.status = 400;
     ctx.response.body = "日期格式错误";
+    ctx.response.headers = headers;
     return; // 结束请求
   }
 
@@ -33,6 +35,7 @@ router.get("/homework/:date", async (ctx: Context) => {
     ctx.response.body = await Deno.readFile(
       join(".", "public", "no-selected-homework.html"),
     );
+    ctx.response.headers = headers;
     return; //结束请求
   }
 
@@ -48,9 +51,11 @@ router.get("/homework/:date", async (ctx: Context) => {
       "{{content}}",
       marked(content, { async: false, "breaks": false }),
     );
+    ctx.response.headers = headers;
   } catch (_) {
     ctx.response.status = 500;
     ctx.response.body = { message: "服务器内部错误" };
+    ctx.response.headers = headers;
   }
 
   return; //结束请求
@@ -67,6 +72,7 @@ router.get("/homework", async (ctx: Context) => {
     ctx.response.body = await Deno.readFile(
       join(".", "public", "no-selected-homework.html"),
     );
+    ctx.response.headers = headers;
     return; //结束请求
   }
 
@@ -82,9 +88,11 @@ router.get("/homework", async (ctx: Context) => {
       "{{content}}",
       marked(content, { async: false }),
     );
+    ctx.response.headers = headers;
   } catch (_) {
     ctx.response.status = 500;
     ctx.response.body = { message: "服务器内部错误" };
+    ctx.response.headers = headers;
     return; // 结束请求
   }
 });
@@ -99,6 +107,7 @@ router.post("/homework/:date", async (ctx: Context) => {
   if (!matchResult) {
     ctx.response.status = 400;
     ctx.response.body = "日期格式错误";
+    ctx.response.headers = headers;
     return; // 结束请求
   }
 
@@ -114,6 +123,7 @@ router.post("/homework/:date", async (ctx: Context) => {
   kv.close();
   ctx.response.status = 200;
   ctx.response.body = { message: "提交成功" };
+  ctx.response.headers = headers;
   return; // 结束请求
 });
 
