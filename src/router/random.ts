@@ -1,6 +1,6 @@
 import randomInt from "../generator/random-int.ts";
 import { Context, Router } from "@oak/oak";
-import { headers } from "../utils/headers.ts";
+import { jsonHeaders } from "../utils/headers.ts";
 
 const router = new Router();
 
@@ -16,7 +16,7 @@ router.get("/random", (context: Context) => {
   if (!minStr || !maxStr || !countStr) {
     context.response.status = 400;
     context.response.body = { message: "缺少必要参数" };
-    context.response.headers = headers;
+    context.response.headers = jsonHeaders;
     return;
   }
 
@@ -37,7 +37,7 @@ router.get("/random", (context: Context) => {
   ) {
     context.response.status = 400;
     context.response.body = { message: "必要参数错误" };
-    context.response.headers = headers;
+    context.response.headers = jsonHeaders;
     return; // 添加return以停止函数执行
   }
 
@@ -49,19 +49,19 @@ router.get("/random", (context: Context) => {
     ]);
     context.response.body = randomNumbers;
     context.response.status = 200;
-    context.response.headers = headers;
+    context.response.headers = jsonHeaders;
     return; // 结束请求
   } catch (_) {
     try {
       const randomNumbers = randomInt(min, max, count, exclude);
       context.response.body = randomNumbers;
       context.response.status = 200;
-      context.response.headers = headers;
+      context.response.headers = jsonHeaders;
       return; // 结束请求
     } catch (_) {
       context.response.status = 400;
       context.response.body = { message: "必要参数错误" };
-      context.response.headers = headers;
+      context.response.headers = jsonHeaders;
       return; // 结束请求
     }
   }
