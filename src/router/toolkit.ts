@@ -22,9 +22,7 @@ router.get("/toolkit/:toolName*", async (context: Context) => {
     );
     context.response.body = toolContent;
     context.response.status = 200;
-    const header = headers;
-    header.append("Content-Type", "text/html");
-    context.response.headers = header;
+    context.response.headers = headers;
     return; // 结束请求
   } catch (_) {
     context.response.status = 404;
