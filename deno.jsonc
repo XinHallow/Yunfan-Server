@@ -1,16 +1,17 @@
 {
+  // 运行命令
   "tasks": {
-    "dev": "deno run --watch --allow-net --allow-read=./public --allow-read=./sql --allow-write=./sql src/main.ts"
+    "dev": "deno run --watch --allow-net --allow-read=. src/main.ts"
   },
+  // 导入模块
   "imports": {
-    "@std/path": "jsr:@std/path@^1.0.0",
-    "@superstruct": "jsr:@superstruct/core@^2.0.2"
+    "@oak/oak": "jsr:@oak/oak@^17.1.4",
+    "@std/assert": "jsr:@std/assert@^1.0.11",
+    "@std/path": "jsr:@std/path@^1.0.8",
+    "marked": "npm:marked@^15.0.7"
   },
-  "unstable": ["kv"],
-  "deploy": {
-    "project": "3d985eee-fa3c-4158-bc02-2a5f29bdd483",
-    "exclude": ["**/node_modules"],
-    "include": [],
-    "entrypoint": "src\\main.ts"
-  }
+  // 启用实验性功能
+  "unstable": [
+    "kv"
+  ]
 }

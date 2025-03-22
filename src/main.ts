@@ -1,26 +1,24 @@
-import { apis } from "./api/mod.ts";
+import { Application } from "@oak/oak/application";
+import { log } from "./utils/mod.ts";
+import { errorMiddleware, logMiddleware } from "./middleware/mod.ts";
+import { applicationConfig } from "./config/mod.ts";
 
-import fallback from "./api/fallback.ts";
+// 路由
+import routers from "./router/mod.ts";
 
-Deno.serve({ port: 80 }, async (request: Request): Promise<Response> => {
-  console.info(`Receive request: ${request.url}`);
+// 创建应用实例
+const app = new Application();
 
-  // 遍历所有注册的API
-  for (const apiName in apis) {
-    const api = apis[apiName];
+// 添加中间件
+app.use(logMiddleware);
+app.use(errorMiddleware);
 
-    // 检查请求方法和URL是否匹配当前API的定义
-    if (
-      api.allowedMethod !== request.method ||
-      !api.urlPattern.test(request.url)
-    ) {
-      continue;
-    }
-
-    // 如果匹配，调用API的解析方法并返回响应
-    return await api.resolve(request, api.urlPattern.exec(request.url));
-  }
-
-  // 如果没有可用的API则尝试读取内嵌HTML
-  return fallback.resolve(request, fallback.urlPattern.exec(request.url));
+// 添加路由
+routers.forEach((router) => {
+  app.use(router.routes());
+  app.use(router.allowedMethods());
 });
+
+// 监听端口
+app.listen({ port: applicationConfig.port });
+log("server", `服务器在 ${applicationConfig.port} 端口启动`, "info");
