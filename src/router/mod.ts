@@ -5,16 +5,16 @@ import file from "./file.ts";
 import random from "./random.ts";
 import toolkit from "./toolkit.ts";
 
-export const rootRouter: Router = root;
-export const homeworkRouter: Router = homework;
-export const fileRouter: Router = file;
-export const randomRouter: Router = random;
-export const toolkitRouter: Router = toolkit;
+export { default as rootRouter } from "./root-page.ts";
+export { default as homeworkRouter } from "./homework.ts";
+export { default as fileRouter } from "./file.ts";
+export { default as randomRouter } from "./random.ts";
+export { default as toolkitRouter } from "./toolkit.ts";
 
 export default [
-  rootRouter,
-  homeworkRouter,
-  fileRouter,
-  randomRouter,
-  toolkitRouter,
-];
+  root,
+  homework,
+  file,
+  random,
+  toolkit,
+] as Router[];

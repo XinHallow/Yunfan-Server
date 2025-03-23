@@ -1,7 +1,9 @@
 import { Application } from "@oak/oak/application";
-import { log } from "./utils/mod.ts";
+import { makeLog } from "./utils/mod.ts";
 import { errorMiddleware, logMiddleware } from "./middleware/mod.ts";
-import { applicationConfig } from "./config/mod.ts";
+import applicationConfig from "../config/application.json" with {
+  type: "json",
+};
 
 // 路由
 import routers from "./router/mod.ts";
@@ -21,4 +23,4 @@ routers.forEach((router) => {
 
 // 监听端口
 app.listen({ port: applicationConfig.port });
-log("server", `服务器在 ${applicationConfig.port} 端口启动`, "info");
+makeLog("server", `服务器在 ${applicationConfig.port} 端口启动`, "info");

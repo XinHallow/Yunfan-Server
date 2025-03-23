@@ -13,6 +13,7 @@ router.get("/toolkit/:toolName*", async (context: Context) => {
     return; // 结束请求
   }
 
+  // 尝试读取工具内容
   try {
     const toolName = result.groups.toolName;
     const toolContent = await Deno.readFile(

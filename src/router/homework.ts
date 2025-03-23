@@ -1,6 +1,6 @@
 import { marked } from "marked";
 import { Context, Router } from "@oak/oak";
-import { matchTime } from "../utils/mod.ts";
+import { matchTimeFromPathname } from "../utils/mod.ts";
 import { join } from "@std/path/join";
 
 const router = new Router();
@@ -8,7 +8,7 @@ const router = new Router();
 // 按照日期返回
 router.get("/homework/:date", async (ctx: Context) => {
   // 解析日期
-  const matchResult = matchTime(
+  const matchResult = matchTimeFromPathname(
     "/homework/:date",
     ctx.request.url.pathname,
   );
@@ -93,7 +93,7 @@ router.get("/homework", async (ctx: Context) => {
 // 按照提交最新作业
 router.post("/homework/:date", async (ctx: Context) => {
   // 解析日期
-  const matchResult = matchTime(
+  const matchResult = matchTimeFromPathname(
     "/homework/:date",
     ctx.request.url.pathname,
   );
