@@ -4,27 +4,8 @@ import { Context, Router } from "@oak/oak";
 const router = new Router();
 
 router.get("/random", (ctx: Context) => {
-  // 检查请求头
-  if (
-    !ctx.request.headers.has("Origin")
-  ) {
-    ctx.response.status = 403;
-    ctx.response.body = { message: "请求来源不合法" };
-    return; // 结束请求
-  }
-  if (
-    ctx.request.headers.get("Origin") !== "https://yunfan.deno.dev" &&
-    ctx.request.headers.get("Origin") !== "http://localhost"
-  ) {
-    ctx.response.status = 403;
-    ctx.response.body = { message: "请求来源不合法" };
-    return; // 结束请求
-  }
-
-  ctx.response.headers.set(
-    "Access-Control-Allow-Origin",
-    "https://yunfan.deno.dev",
-  );
+  ctx.response.headers.append("Access-Control-Allow-Origin", "http://localhost");
+  ctx.response.headers.append("Access-Control-Allow-Origin", "https://yunfan.deno.dev");
 
   // 获取参数
   const params = ctx.request.url.searchParams;
