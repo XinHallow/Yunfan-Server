@@ -18,3 +18,6 @@ export default [
   random,
   toolkit,
 ] as Router[];
+
+export const name = "router";
+export const version = "0.0.1";
