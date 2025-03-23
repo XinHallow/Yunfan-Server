@@ -92,6 +92,8 @@
     ></script>
     <!-- Uses File API to get JavaScript Resource -->
     <script>
+      const onDevelopment = false;
+
       async function random() {
         // 获取数值字符串
         const min = parseInt(
@@ -126,7 +128,9 @@
 
         // 向服务器发送随机数请求
         const url = new URL(
-          "https://yunfan-server.deno.dev/random",
+          onDevelopment
+            ? "http://localhost/random"
+            : "https://yunfan.deno.dev/random",
         );
         url.searchParams.set("min", min);
         url.searchParams.set("max", max);

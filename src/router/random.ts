@@ -4,6 +4,9 @@ import { Context, Router } from "@oak/oak";
 const router = new Router();
 
 router.get("/random", (context: Context) => {
+  // 检查请求头
+  if (context.request.headers)
+
   // 获取参数
   const params = context.request.url.searchParams;
   const minStr = params.get("min");
