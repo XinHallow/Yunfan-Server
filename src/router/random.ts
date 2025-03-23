@@ -1,4 +1,4 @@
-import randomInt from "../generator/random-int.ts";
+import { randomInt } from "../generator/mod.ts";
 import { Context, Router } from "@oak/oak";
 
 const router = new Router();
