@@ -3,12 +3,31 @@ import { Context, Router } from "@oak/oak";
 
 const router = new Router();
 
-router.get("/random", (context: Context) => {
+router.get("/random", (ctx: Context) => {
   // 检查请求头
-  if (context.request.headers)
+  if (
+    !ctx.request.headers.has("Origin")
+  ) {
+    ctx.response.status = 403;
+    ctx.response.body = { message: "请求来源不合法" };
+    return; // 结束请求
+  }
+  if (
+    ctx.request.headers.get("Origin") !== "https://yunfan.deno.dev" &&
+    ctx.request.headers.get("Origin") !== "http://localhost"
+  ) {
+    ctx.response.status = 403;
+    ctx.response.body = { message: "请求来源不合法" };
+    return; // 结束请求
+  }
+
+  ctx.response.headers.set(
+    "Access-Control-Allow-Origin",
+    "https://yunfan.deno.dev",
+  );
 
   // 获取参数
-  const params = context.request.url.searchParams;
+  const params = ctx.request.url.searchParams;
   const minStr = params.get("min");
   const maxStr = params.get("max");
   const excludeStr = params.get("exclude");
@@ -16,8 +35,8 @@ router.get("/random", (context: Context) => {
 
   // 检查参数
   if (!minStr || !maxStr || !countStr) {
-    context.response.status = 400;
-    context.response.body = { message: "缺少必要参数" };
+    ctx.response.status = 400;
+    ctx.response.body = { message: "缺少必要参数" };
     return; // 结束请求
   }
 
@@ -36,8 +55,8 @@ router.get("/random", (context: Context) => {
     !Number.isSafeInteger(count) ||
     exclude.some((value) => !Number.isSafeInteger(value))
   ) {
-    context.response.status = 400;
-    context.response.body = { message: "必要参数错误" };
+    ctx.response.status = 400;
+    ctx.response.body = { message: "必要参数错误" };
     return; // 结束请求
   }
 
@@ -47,18 +66,18 @@ router.get("/random", (context: Context) => {
       ...exclude,
       ...[27, 43, 44, 49, 51],
     ]);
-    context.response.body = randomNumbers;
-    context.response.status = 200;
+    ctx.response.body = randomNumbers;
+    ctx.response.status = 200;
     return; // 结束请求
   } catch (_) {
     try {
       const randomNumbers = randomInt(min, max, count, exclude);
-      context.response.body = randomNumbers;
-      context.response.status = 200;
+      ctx.response.body = randomNumbers;
+      ctx.response.status = 200;
       return; // 结束请求
     } catch (_) {
-      context.response.status = 400;
-      context.response.body = { message: "必要参数错误" };
+      ctx.response.status = 400;
+      ctx.response.body = { message: "必要参数错误" };
       return; // 结束请求
     }
   }
